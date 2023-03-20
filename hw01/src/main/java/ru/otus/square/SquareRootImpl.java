@@ -12,7 +12,7 @@ public class SquareRootImpl implements SquareRoot {
     }
 
     @Override
-    public List<Double> getRoot(double a, double b, double c) {
+    public List<Double> solve(double a, double b, double c) {
         checkParam(a, b, c);
 
         double d = b * b - 4 * a * c;
