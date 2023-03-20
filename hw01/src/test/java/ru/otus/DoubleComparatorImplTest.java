@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class DoubleComparatorImplTest {
 
     private final static Double DELTA = 0.0005;
+    private final static Double LARGE_DELTA = 1.0000000000000004*DELTA;
+    private final static Double LESS_DELTA = 1.0000000000000003*DELTA;
     private final static Double TEST_DOUBLE = 0.0005;
     private final static int COMPARATOR_EQUALS = 0;
     private final static int COMPARATOR_LARGE = 1;
@@ -25,7 +27,7 @@ class DoubleComparatorImplTest {
     @Test
     @DisplayName("Если сравниваемые числа различаются на величину меньше дельты, возвращает 0")
     void compareEquals() {
-        var result = comparator.compare(TEST_DOUBLE, TEST_DOUBLE + DELTA/2);
+        var result = comparator.compare(TEST_DOUBLE, TEST_DOUBLE + LESS_DELTA);
 
         assertEquals(COMPARATOR_EQUALS, result);
     }
@@ -33,7 +35,7 @@ class DoubleComparatorImplTest {
     @Test
     @DisplayName("Если первое число меньше второго на величину больше дельты, возвращает -1")
     void compareLess() {
-        var result = comparator.compare(TEST_DOUBLE, TEST_DOUBLE + 2*DELTA);
+        var result = comparator.compare(TEST_DOUBLE, TEST_DOUBLE + LARGE_DELTA);
 
         assertEquals(COMPARATOR_LESS, result);
     }
@@ -41,7 +43,7 @@ class DoubleComparatorImplTest {
     @Test
     @DisplayName("Если первое число меньше второго на величину больше дельты, возвращает -1")
     void compareLarge() {
-        var result = comparator.compare(TEST_DOUBLE, TEST_DOUBLE - 2*DELTA);
+        var result = comparator.compare(TEST_DOUBLE, TEST_DOUBLE - LARGE_DELTA);
 
         assertEquals(COMPARATOR_LARGE, result);
     }

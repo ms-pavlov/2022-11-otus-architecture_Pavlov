@@ -23,6 +23,7 @@ public class DoubleComparatorImpl implements DoubleComparator{
         if (o1 - o2 > delta) {
             return 1;
         }
+
         throw new DoubleComparatorException();
     }
 
