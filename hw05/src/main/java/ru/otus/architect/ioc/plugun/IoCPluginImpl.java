@@ -7,6 +7,7 @@ import ru.otus.architect.game.objects.characteristic.Movable;
 import ru.otus.architect.ioc.IoCContainer;
 import ru.otus.architect.ioc.methods.FactoryMethod;
 
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class IoCPluginImpl implements IoCPlugin {
