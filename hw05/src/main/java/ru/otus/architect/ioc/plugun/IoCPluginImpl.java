@@ -31,6 +31,6 @@ public class IoCPluginImpl implements IoCPlugin {
                 (FactoryMethod) args -> new MacroCommand(
                         Stream.of(args)
                                 .map(arg -> (Command) new MoveCommand((Movable) arg))
-                                .toList()));
+                                .collect(Collectors.toList())));
     }
 }
