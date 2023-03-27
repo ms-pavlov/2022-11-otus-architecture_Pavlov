@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.architect.ioc.methods.FactoryMethod;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -23,7 +24,8 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class IoCStorageImplTest {
     private final static Logger log = LoggerFactory.getLogger(IoCStorageImplTest.class);
-
+    public final static String REGISTER = "IoC.Register";
+    public final static String SCOPE_NEW = "Scopes.New";
     private final static String METHOD_NAME = "test";
     private final static String SCOPE_NAME = "test";
     private final static String SCOPE_METHOD_NAME = SCOPE_NAME + "_" + METHOD_NAME;
@@ -41,7 +43,10 @@ class IoCStorageImplTest {
 
     @BeforeEach
     void setUp() {
-        storage = new IoCThreadLocalStorage(register, scope);
+        storage = new IoCThreadLocalStorage(
+                Map.of(
+                        REGISTER, storage1 -> register,
+                        SCOPE_NEW, storage1 -> scope));
     }
 
     @Test
@@ -59,17 +64,17 @@ class IoCStorageImplTest {
     @Test
     @DisplayName("По-умолчанию есть регистрация")
     void hasRegister() {
-        assertEquals(register, storage.get(IoCThreadLocalStorage.REGISTER));
+        assertEquals(register, storage.get(REGISTER));
         storage.setScope(SCOPE_NAME);
-        assertEquals(register, storage.get(IoCThreadLocalStorage.REGISTER));
+        assertEquals(register, storage.get(REGISTER));
     }
 
     @Test
     @DisplayName("По-умолчанию есть смена Scope")
     void hasScope() {
-        assertEquals(scope, storage.get(IoCThreadLocalStorage.SCOPE_NEW));
+        assertEquals(scope, storage.get(SCOPE_NEW));
         storage.setScope(SCOPE_NAME);
-        assertEquals(scope, storage.get(IoCThreadLocalStorage.SCOPE_NEW));
+        assertEquals(scope, storage.get(SCOPE_NEW));
     }
 
 

@@ -7,23 +7,26 @@ import ru.otus.architect.ioc.methods.IoCScopeMethod;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 public class IoCThreadLocalStorage implements IoCStorage {
-    public final static String REGISTER = "IoC.Register";
-    public final static String SCOPE_NEW = "Scopes.New";
     public final static String DEFAULT_SCOPE = "main";
 
     private final Map<String, Map<String, FactoryMethod>> storage;
     private final IoCStoragePlugin scopeInit;
     private final ThreadLocal<String> scope;
 
-    public IoCThreadLocalStorage(FactoryMethod register, FactoryMethod scope) {
+    public IoCThreadLocalStorage(Map<String, Function<IoCStorage, FactoryMethod>> initMethods) {
         this.storage = new ConcurrentHashMap<>();
         this.scope = ThreadLocal.withInitial(() -> DEFAULT_SCOPE);
         this.storage.put(DEFAULT_SCOPE, new ConcurrentHashMap<>());
         this.scopeInit = new IoCStorageGroupPlugin(
-                storage -> storage.put(REGISTER, register),
-                storage -> storage.put(SCOPE_NEW, scope));
+                initMethods.entrySet()
+                        .stream()
+                        .map(entry -> (IoCStoragePlugin) store -> store.put(
+                                entry.getKey(), entry.getValue().apply(store)
+                        ))
+                        .toList());
         scopeInit.execute(this);
 
     }
