@@ -29,6 +29,8 @@ class IoCStorageImplTest {
     public final static String SCOPE_NEW = "Scopes.New";
     private final static String METHOD_NAME = "test";
     private final static String SCOPE_NAME = "test";
+    private final static String TEST_DEPENDENCY = "IoC.Object.test";
+    private final static String TEST_DEPENDENCY_REGEX = "^IoC.\\S*.test$";
     private final static String SCOPE_METHOD_NAME = SCOPE_NAME + "_" + METHOD_NAME;
 
     @Mock
@@ -105,6 +107,15 @@ class IoCStorageImplTest {
         storage.put(METHOD_NAME, method);
 
         assertEquals(method, storage.get(METHOD_NAME));
+    }
+
+    @Test
+    @DisplayName("Проверяет наличие зависимости по regex")
+    void contains() {
+        storage.put(TEST_DEPENDENCY, method);
+
+        assertTrue(storage.contains(TEST_DEPENDENCY_REGEX));
+
     }
 
     @RepeatedTest(10)

@@ -19,14 +19,14 @@ public class IoCThreadLocalStorage implements IoCStorage {
         this.scope = ThreadLocal.withInitial(() -> DEFAULT_SCOPE);
         this.storage.put(DEFAULT_SCOPE, new ConcurrentHashMap<>());
         this.scopeInit = new IoCStorageGroupPlugin(
-                (IoCStoragePlugin[]) initPlugin.entrySet()
+                initPlugin.entrySet()
                         .stream()
                         .map(
                                 entry -> (IoCStoragePlugin) storage -> storage
                                         .put(
                                                 entry.getKey(),
                                                 entry.getValue().apply(storage)))
-                        .toArray());
+                        .toList());
         scopeInit.execute(this);
 
     }
@@ -61,5 +61,13 @@ public class IoCThreadLocalStorage implements IoCStorage {
                     return value;
                 })
                 .orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public boolean contains(String regex) {
+        return storage.get(scope.get()).keySet()
+                .stream()
+                .anyMatch(
+                        key -> key.matches(regex));
     }
 }

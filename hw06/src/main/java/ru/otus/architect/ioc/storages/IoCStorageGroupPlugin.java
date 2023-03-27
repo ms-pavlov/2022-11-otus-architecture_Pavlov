@@ -10,6 +10,10 @@ public class IoCStorageGroupPlugin implements IoCStoragePlugin {
         this.plugins = List.of(plugins);
     }
 
+    public IoCStorageGroupPlugin(List<IoCStoragePlugin> plugins) {
+        this.plugins = plugins;
+    }
+
     @Override
     public void execute(IoCStorage storage) {
         plugins.forEach(plugin -> plugin.execute(storage));

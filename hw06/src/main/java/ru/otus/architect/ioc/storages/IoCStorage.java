@@ -11,4 +11,6 @@ public interface IoCStorage {
     FactoryMethod get(String name);
 
     void put(String name, FactoryMethod method);
+
+    boolean contains(String pattern);
 }

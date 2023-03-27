@@ -24,8 +24,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class AdapterFactoryImplTest {
 
-    public final static String REGISTER = "IoC.Register";
-    public final static String SCOPE_NEW = "Scopes.New";
+    private final static String REGISTER = "IoC.Register";
+    private final static String SCOPE_NEW = "Scopes.New";
 
     private final static Object TEST_OBJECT = new Object();
     private final static Class<?> TEST_INTERFACE = Movable.class;
