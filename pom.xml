@@ -17,5 +17,8 @@
     <modules>
         <module>hw01</module>
         <module>hw05</module>
+        <module>hw06</module>
+        <module>hw06-codegen</module>
+        <module>hw06-lib</module>
     </modules>
 </project>
