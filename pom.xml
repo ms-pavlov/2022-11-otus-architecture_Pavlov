@@ -16,5 +16,6 @@
 
     <modules>
         <module>hw01</module>
+        <module>hw05</module>
     </modules>
 </project>
