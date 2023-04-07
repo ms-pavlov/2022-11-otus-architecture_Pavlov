@@ -20,5 +20,7 @@
         <module>hw06</module>
         <module>hw06-codegen</module>
         <module>hw06-lib</module>
+        <module>hw07</module>
+        <module>hw11</module>
     </modules>
 </project>
