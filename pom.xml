@@ -22,5 +22,6 @@
         <module>hw06-lib</module>
         <module>hw07</module>
         <module>hw11</module>
+        <module>hw08</module>
     </modules>
 </project>
