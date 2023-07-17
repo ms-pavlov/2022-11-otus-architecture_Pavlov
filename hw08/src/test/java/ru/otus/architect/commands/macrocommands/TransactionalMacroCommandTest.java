@@ -48,6 +48,7 @@ class TransactionalMacroCommandTest {
         reverseList.add(reveseCommand);
 
         assertDoesNotThrow(() -> macroCommand.execute());
+        verifyNoInteractions(reveseCommand);
     }
 
     @Test

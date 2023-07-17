@@ -10,50 +10,45 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.architect.commands.Command;
 import ru.otus.architect.commands.MoveCommandException;
+import ru.otus.architect.commands.transactions.Transactional;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class TransactionalMacroCommandTest {
+class TransactionalMacroCommandChangeTest {
 
-    private TransactionalMacroCommand macroCommand;
-    private Queue<Command> commandQueue;
-    private List<Command> reverseList;
+    private Command macroCommand;
+    private List<Command> commandQueue;
 
+    @Mock
+    private Transactional transactional;
     @Mock
     private Command command;
-    @Mock
-    private Command reveseCommand;
 
     @BeforeEach
     void init() {
-        commandQueue = new LinkedList<>();
-        reverseList = new ArrayList<>();
+        doNothing().when(transactional).execute();
+        doNothing().when(command).execute();
 
+        commandQueue = new LinkedList<>();
+        commandQueue.add(transactional);
         commandQueue.add(command);
 
-        macroCommand = new TransactionalMacroCommand(commandQueue, reverseList);
+        macroCommand = new TransactionalMacroCommandChange(commandQueue);
     }
 
     @Test
     @DisplayName("Нормальное выполнение")
     void shouldOk() {
-        reverseList.add(reveseCommand);
-
         assertDoesNotThrow(() -> macroCommand.execute());
-    }
 
-    @Test
-    @DisplayName("Случай, когда некорректно собран список обратных действий")
-    void shouldThrowIncorrectReverseListException() {
-        assertThrows(IncorrectReverseCommandListException.class, () -> macroCommand.execute());
+        verify(transactional, times(1)).backup();
+        verify(transactional, times(0)).rollback();
     }
 
     @Test
@@ -62,29 +57,30 @@ class TransactionalMacroCommandTest {
         commandQueue.add(() -> {
             throw new MoveCommandException(new RuntimeException("This is random exception"));
         });
-        reverseList.add(reveseCommand);
-        reverseList.add(reveseCommand);
 
         assertThrows(MoveCommandException.class, () -> macroCommand.execute());
-        verify(reveseCommand, times(1)).execute();
+        verify(transactional, times(1)).backup();
+        verify(transactional, times(1)).rollback();
     }
 
     @Test
     @DisplayName("Проверяем порядок вызова транзакционных комманд")
     void shouldUseReverseCommandInOrder() {
-        Command secondReverseCommand = mock(Command.class);
-        commandQueue.add(command);
+        Transactional secondTransactional = mock(Transactional.class);
+        Transactional thirdTransactional = mock(Transactional.class);
+        commandQueue.add(secondTransactional);
         commandQueue.add(() -> {
             throw new MoveCommandException(new RuntimeException("This is random exception"));
         });
-        reverseList.add(reveseCommand);
-        reverseList.add(secondReverseCommand);
-        reverseList.add(() -> System.out.println("You will never see that text"));
-        InOrder inOrder = Mockito.inOrder(reveseCommand, secondReverseCommand);
+        commandQueue.add(thirdTransactional);
+        InOrder rollbackOrder = Mockito.inOrder(secondTransactional, transactional);
 
         assertThrows(MoveCommandException.class, () -> macroCommand.execute());
-        inOrder.verify(secondReverseCommand).execute();
-        inOrder.verify(reveseCommand).execute();
-    }
 
+        rollbackOrder.verify(secondTransactional).rollback();
+        rollbackOrder.verify(transactional).rollback();
+
+        verify(thirdTransactional, times(0)).execute();
+        verify(thirdTransactional, times(0)).rollback();
+    }
 }
