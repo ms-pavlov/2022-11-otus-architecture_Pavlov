@@ -2,7 +2,6 @@ package ru.otus.architect.ioc.plugins.gen;
 
 import ru.otus.architect.game.Game;
 import ru.otus.architect.game.GameObject;
-import ru.otus.architect.ioc.IoCContainer;
 import ru.otus.architect.ioc.methods.FactoryMethod;
 import ru.otus.architect.ioc.plugins.IoCPlugin;
 
@@ -22,8 +21,8 @@ public class GameObjectMovableAdapterPlugin implements IoCPlugin {
         this.registerIoCStrategy = registerIoCStrategy;
         this.scopeIoCStrategy = scopeIoCStrategy;
         this.scopeName = Optional.ofNullable(game)
-                        .map(Game::getGameId)
-                        .orElseThrow(RuntimeException::new);
+                .map(Game::getGameId)
+                .orElseThrow(RuntimeException::new);
     }
 
     @Override

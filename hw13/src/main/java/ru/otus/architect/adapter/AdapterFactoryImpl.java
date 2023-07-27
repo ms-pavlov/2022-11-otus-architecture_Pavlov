@@ -5,7 +5,7 @@ import com.google.common.collect.Table;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AdapterFactoryImpl implements AdapterFactory{
+public class AdapterFactoryImpl implements AdapterFactory {
     private final Table<Class<?>, Object, Object> adapters;
     private final AdapterGenerator generator;
 

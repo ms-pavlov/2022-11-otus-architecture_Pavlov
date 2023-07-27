@@ -1,12 +1,10 @@
 package ru.otus.architect.adapter;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import ru.otus.architect.ioc.IoCContainer;
 import ru.otus.architect.processor.DependencyNameGeneratorFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;

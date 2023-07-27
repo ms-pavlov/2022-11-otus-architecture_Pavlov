@@ -8,9 +8,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.architect.ioc.plugins.IoCPlugin;
 
+import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -47,6 +48,14 @@ class GameBuilderTest {
     @DisplayName("Билдер добавляет плагины для дальнейшего исполнения")
     void addPlugin() {
         gameBuilder.addPlugin(game -> plugin).build();
+
+        verify(plugin, times(1)).execute();
+    }
+
+    @Test
+    @DisplayName("Билдер добавляет плагины для дальнейшего исполнения")
+    void addPlugins() {
+        gameBuilder.addPlugins(List.of(game -> plugin)).build();
 
         verify(plugin, times(1)).execute();
     }

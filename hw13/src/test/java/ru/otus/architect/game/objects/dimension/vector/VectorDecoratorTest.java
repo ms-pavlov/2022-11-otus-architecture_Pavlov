@@ -3,14 +3,15 @@ package ru.otus.architect.game.objects.dimension.vector;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class VectorDecoratorTest {
 
     private final static Integer X_COORDINATE = 1;
     private final static Integer Y_COORDINATE = 2;
     private final static Vector TEST_2D_VECTOR = new VectorImpl(X_COORDINATE, Y_COORDINATE);
-    private final static Vector TEST_1D_VECTOR = new VectorImpl( X_COORDINATE);
+    private final static Vector TEST_1D_VECTOR = new VectorImpl(X_COORDINATE);
 
 
     @Test

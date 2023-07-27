@@ -3,7 +3,8 @@ package ru.otus.architect.game;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class NullGameObjectTest {
 
@@ -23,6 +24,6 @@ class NullGameObjectTest {
 
     @Test
     void setParameter() {
-        assertThrows(RuntimeException.class, () ->gameObject.setParameter("", null));
+        assertThrows(RuntimeException.class, () -> gameObject.setParameter("", null));
     }
 }

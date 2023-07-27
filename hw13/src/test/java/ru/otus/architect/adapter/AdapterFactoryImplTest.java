@@ -8,24 +8,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.architect.game.Game;
 import ru.otus.architect.game.GameObject;
-import ru.otus.architect.game.StarShip;
 import ru.otus.architect.game.objects.characteristic.Movable;
-import ru.otus.architect.ioc.IoCContainer;
-import ru.otus.architect.ioc.IoCContainerImpl;
 import ru.otus.architect.ioc.methods.FactoryMethod;
-import ru.otus.architect.ioc.methods.IoCRegisterMethod;
-import ru.otus.architect.ioc.methods.IoCScopeMethod;
-import ru.otus.architect.ioc.plugins.gen.GameObjectMovableAdapterPlugin;
-import ru.otus.architect.ioc.storages.IoCThreadLocalStorage;
-import ru.otus.architect.processor.DependencyNameGeneratorImpl;
 
-import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

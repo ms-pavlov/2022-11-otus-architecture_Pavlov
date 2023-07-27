@@ -2,14 +2,13 @@ package ru.otus.architect.adapter;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import ru.otus.architect.ioc.IoCContainer;
 import ru.otus.architect.processor.DependencyNameGeneratorFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.util.function.BiFunction;
 
 @Component
-public class AdapterInvocationHandlerProviderImpl implements InvocationHandlerProvider{
+public class AdapterInvocationHandlerProviderImpl implements InvocationHandlerProvider {
     private final BiFunction<String, Object[], Object> dependencyIoCStrategy;
     private final DependencyNameGeneratorFactory generatorFactory;
 

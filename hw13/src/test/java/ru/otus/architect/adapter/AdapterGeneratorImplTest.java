@@ -34,7 +34,6 @@ class AdapterGeneratorImplTest {
     }
 
 
-
     @Test
     void generate() {
         var result = generator.generate(Movable.class, object);

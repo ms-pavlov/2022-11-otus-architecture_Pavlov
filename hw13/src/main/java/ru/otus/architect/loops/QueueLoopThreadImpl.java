@@ -32,7 +32,7 @@ public class QueueLoopThreadImpl implements QueueLoopThread {
     }
 
     public void run() {
-        while(this.stopHandler.get()) {
+        while (this.stopHandler.get()) {
             try {
                 Command command = this.commandSupplierStrategy.get();
 

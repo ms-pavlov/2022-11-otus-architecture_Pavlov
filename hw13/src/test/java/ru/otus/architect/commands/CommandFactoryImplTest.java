@@ -12,10 +12,10 @@ import ru.otus.architect.expressions.ExpressionContextFactory;
 import ru.otus.openapi.model.Message;
 
 import java.util.Map;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

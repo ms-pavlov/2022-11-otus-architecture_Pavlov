@@ -8,8 +8,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.architect.game.Game;
 import ru.otus.architect.game.objects.characteristic.Movable;
-import ru.otus.architect.ioc.IoCContainer;
-import ru.otus.architect.ioc.IoCContainerImpl;
 import ru.otus.architect.ioc.plugins.gen.GameObjectMovableAdapterPlugin;
 import ru.otus.architect.ioc.storages.IoCStorage;
 import ru.otus.architect.ioc.storages.IoCThreadLocalStorage;

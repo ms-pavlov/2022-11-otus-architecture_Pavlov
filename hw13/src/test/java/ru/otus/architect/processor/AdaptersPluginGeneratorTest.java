@@ -8,11 +8,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Name;
-
 import java.io.PrintWriter;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,7 +44,7 @@ class AdaptersPluginGeneratorTest {
 
     @Test
     void prepPlugin() {
-        when(interfaceClass.getEnclosedElements()).thenReturn((List)List.of(interfaceMethod));
+        when(interfaceClass.getEnclosedElements()).thenReturn((List) List.of(interfaceMethod));
         when(interfaceMethod.getSimpleName()).thenReturn(interfaceMethodName);
         when(interfaceMethodName.toString()).thenReturn(TEST_METHOD_NAME);
 

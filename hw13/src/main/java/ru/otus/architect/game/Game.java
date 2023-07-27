@@ -3,7 +3,6 @@ package ru.otus.architect.game;
 import ru.otus.architect.commands.Command;
 
 import java.util.Map;
-import java.util.Queue;
 
 public interface Game {
 
@@ -20,4 +19,4 @@ public interface Game {
     Map<Long, GameObject> getAllGameObjects();
 
     Map<Long, String> getGameObjectsActionNames(Long objectId);
- }
+}

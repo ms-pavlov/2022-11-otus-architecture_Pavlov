@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Proxy;
 
 @Component
-public class AdapterGeneratorImpl implements AdapterGenerator{
+public class AdapterGeneratorImpl implements AdapterGenerator {
 
     private final InvocationHandlerProvider handlerProvider;
 

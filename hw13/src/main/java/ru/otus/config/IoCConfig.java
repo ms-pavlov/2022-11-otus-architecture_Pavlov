@@ -37,7 +37,9 @@ public class IoCConfig {
     @Bean
     @Scope("singleton")
     public IoCStorage ioCStorage() {
-        return new IoCThreadLocalStorage(Map.of(REGISTER, IoCRegisterMethod::new, SCOPE_NEW, IoCScopeMethod::new));
+        return new IoCThreadLocalStorage(Map.of(
+                REGISTER, IoCRegisterMethod::new,
+                SCOPE_NEW, IoCScopeMethod::new));
     }
 
     @Bean(name = "registerIoCStrategy")
@@ -48,11 +50,6 @@ public class IoCConfig {
         };
     }
 
-    @Bean(name = "dependencyIoCStrategy")
-    public BiFunction<String, Object[], Object> dependencyIoCStrategy(IoCContainer container) {
-        return container::resolve;
-    }
-
     @Bean(name = "scopeIoCStrategy")
     public Consumer<String> scopeIoCStrategy(IoCContainer container) {
         return name -> {
@@ -61,8 +58,14 @@ public class IoCConfig {
         };
     }
 
+    @Bean(name = "dependencyIoCStrategy")
+    public BiFunction<String, Object[], Object> dependencyIoCStrategy(IoCContainer container) {
+        return container::resolve;
+    }
+
     @Bean(name = "commandBuilderStorage")
     public Map<String, Function<ExpressionContext, Command>> commandBuilderStorage(
+            IoCContainer container,
             @Qualifier("commandConsumerStrategy") BiConsumer<String, Command> commandConsumerStrategy) {
         Map<String, Function<ExpressionContext, Command>> result = new HashMap<>();
         result.put(
@@ -86,7 +89,9 @@ public class IoCConfig {
                     selectScore(expressionContext);
                     return new InterpretCommand(
                             commandConsumerStrategy,
-                            value -> new CommandExpression(new ActionNameExpression())
+                            value -> new AccessCheckCommandExpression(
+                                    new CommandExpression(new ActionNameExpression()),
+                                    new AccessDeniedCommandExpression())
                                     .interpret(expressionContext),
                             expressionContext.getMessage());
                 });

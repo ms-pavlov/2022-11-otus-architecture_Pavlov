@@ -1,17 +1,13 @@
 package ru.otus.architect.commands;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import ru.otus.architect.ioc.IoCContainer;
 import ru.otus.openapi.model.Message;
 
 import java.util.Optional;
-import java.util.Queue;
 import java.util.UUID;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class InterpretCommand implements Command{
+public class InterpretCommand implements Command {
 
     private final BiConsumer<String, Command> commandConsumerStrategy;
     private final Function<Message, Command> commandBuilderStrategy;

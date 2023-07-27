@@ -1,7 +1,5 @@
 package ru.otus.architect.ioc.storages;
 
-import lombok.ToString;
-import org.springframework.stereotype.Component;
 import ru.otus.architect.ioc.methods.FactoryMethod;
 
 import java.util.Map;

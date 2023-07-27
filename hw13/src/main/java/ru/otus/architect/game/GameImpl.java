@@ -3,6 +3,7 @@ package ru.otus.architect.game;
 import ru.otus.architect.commands.Command;
 
 import javax.validation.constraints.NotNull;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
@@ -18,6 +19,11 @@ public class GameImpl implements Game {
         this.objectStorage = objectStorage;
         this.commandQueue = commandQueue;
     }
+
+    public GameImpl(UUID uuid, GameObjectStorage objectStorage) {
+        this(uuid, objectStorage, new LinkedList<>());
+    }
+
 
     @Override
     public String getGameId() {

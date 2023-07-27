@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.architect.commands.Command;
 import ru.otus.architect.commands.LogCommand;
@@ -13,11 +12,9 @@ import ru.otus.architect.commands.MoveCommand;
 import ru.otus.architect.exceptions.ExceptionHandler;
 import ru.otus.architect.exceptions.ExceptionHandlingStrategy;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

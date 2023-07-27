@@ -21,7 +21,7 @@ class ExecutorServiceFactoryImplTest {
         ExecutorServiceFactory factory = new ExecutorServiceFactoryImpl("executor-", 1);
         ExecutorService executorService = factory.getExecutorService();
 
-        for(int i = 0; i < 100; ++i) {
+        for (int i = 0; i < 100; ++i) {
             executorService.submit(() -> names.add(Thread.currentThread().getName())).get(1L, TimeUnit.SECONDS);
         }
 

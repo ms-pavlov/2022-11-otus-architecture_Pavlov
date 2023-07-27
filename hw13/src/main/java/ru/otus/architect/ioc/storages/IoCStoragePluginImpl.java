@@ -2,7 +2,7 @@ package ru.otus.architect.ioc.storages;
 
 import ru.otus.architect.ioc.methods.FactoryMethod;
 
-public class IoCStoragePluginImpl implements IoCStoragePlugin{
+public class IoCStoragePluginImpl implements IoCStoragePlugin {
     private final String name;
     private final FactoryMethod method;
 

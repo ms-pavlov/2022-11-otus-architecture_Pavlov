@@ -8,21 +8,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.architect.adapter.AdapterFactory;
 import ru.otus.architect.game.Game;
-import ru.otus.architect.game.GameObject;
 import ru.otus.architect.game.objects.characteristic.Movable;
-import ru.otus.architect.ioc.IoCContainer;
 import ru.otus.architect.ioc.methods.FactoryMethod;
 import ru.otus.architect.ioc.plugins.IoCPlugin;
-
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

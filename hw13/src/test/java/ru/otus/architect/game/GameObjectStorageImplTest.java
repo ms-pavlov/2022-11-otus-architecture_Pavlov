@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GameObjectStorageImplTest {
     private final static Long GAME_OBJECT_ID = 1L;
@@ -64,4 +64,12 @@ class GameObjectStorageImplTest {
         assertEquals(ACTION_NAMES.get((long) ACTION_NAMES.size() - 1), result);
     }
 
+    @Test
+    void putGameObject() {
+        var id = storage.putGameObject(GAME_OBJECTS.get(GAME_OBJECT_ID));
+
+        var result = storage.getGameObject(id);
+
+        assertEquals(GAME_OBJECTS.get(id), result);
+    }
 }

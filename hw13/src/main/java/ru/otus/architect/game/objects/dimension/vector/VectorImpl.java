@@ -26,9 +26,9 @@ public class VectorImpl implements Vector {
 
     @Override
     public Vector scalarAdd(double acceleration) {
-        var length = Math.sqrt(coordinates.stream().mapToInt(value -> value*value).sum());
+        var length = Math.sqrt(coordinates.stream().mapToInt(value -> value * value).sum());
         var multiplier = 1.0 + acceleration / length;
-        return new VectorImpl(coordinates.stream().map(value -> (int) Math.round(value*multiplier)).collect(Collectors.toList()));
+        return new VectorImpl(coordinates.stream().map(value -> (int) Math.round(value * multiplier)).collect(Collectors.toList()));
     }
 
     @Override

@@ -25,16 +25,16 @@ public class TransactionalMacroCommand implements Command {
 
     @Override
     public void execute() {
-        if(commandList.size() != reverseCommandList.size()) {
+        if (commandList.size() != reverseCommandList.size()) {
             throw new IncorrectReverseCommandListException("For every command in queue must be a reverse action!");
         }
 
         while (!commandList.isEmpty()) {
-            try{
+            try {
                 commandList.poll().execute();
                 counter++;
             } catch (Exception e) {
-                while(counter >= 0) {
+                while (counter >= 0) {
                     reverseCommandList.get(counter).execute();
                     counter--;
                 }

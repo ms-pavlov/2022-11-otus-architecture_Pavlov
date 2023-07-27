@@ -32,6 +32,11 @@ public class GameBuilder {
         return this;
     }
 
+    public GameBuilder addPlugins(List<Function<Game, IoCPlugin>> plugins) {
+        this.plugins.addAll(plugins);
+        return this;
+    }
+
     public GameBuilder addGameObject(Long id, GameObject gameObject) {
         this.objectStorage.putGameObject(id, gameObject);
         return this;

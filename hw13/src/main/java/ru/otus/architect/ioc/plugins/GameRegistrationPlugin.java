@@ -6,7 +6,6 @@ import ru.otus.architect.ioc.methods.FactoryMethod;
 import ru.otus.openapi.model.Message;
 
 import java.util.Optional;
-import java.util.Queue;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 

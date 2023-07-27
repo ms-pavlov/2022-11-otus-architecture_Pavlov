@@ -13,7 +13,7 @@ public class PolarVector2D implements Vector {
     private final Angle corner;
 
     public PolarVector2D(double radial, Angle corner) {
-        if (radial <  - DELTA ) {
+        if (radial < -DELTA) {
             throw new VectorsInitiationException("Bad radial");
         }
         this.radial = radial;
@@ -36,7 +36,7 @@ public class PolarVector2D implements Vector {
 
     @Override
     public List<Integer> getCoordinates() {
-        return List.of((int) Math.round(radial*Math.cos(corner.getAngle())), (int) Math.round(radial*Math.sin(corner.getAngle())));
+        return List.of((int) Math.round(radial * Math.cos(corner.getAngle())), (int) Math.round(radial * Math.sin(corner.getAngle())));
     }
 
     @Override
@@ -60,12 +60,12 @@ public class PolarVector2D implements Vector {
 
         PolarVector2D that = (PolarVector2D) o;
 
-        if (this.getDimension() != that.getDimension() ) return false;
+        if (this.getDimension() != that.getDimension()) return false;
 
         var thatCoordinates = that.getCoordinates();
         var thisCoordinates = this.getCoordinates();
 
-        for (var i = 0; i < getDimension(); i ++) {
+        for (var i = 0; i < getDimension(); i++) {
             if (!thatCoordinates.get(i).equals(thisCoordinates.get(i))) {
                 return false;
             }

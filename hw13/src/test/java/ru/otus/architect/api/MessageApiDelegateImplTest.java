@@ -12,11 +12,11 @@ import ru.otus.architect.commands.CommandFactory;
 import ru.otus.openapi.api.MessageApiDelegate;
 import ru.otus.openapi.model.Message;
 
+import java.security.Principal;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,6 +36,8 @@ class MessageApiDelegateImplTest {
     private ServerWebExchange exchange;
     @Mock
     private Command command;
+    @Mock
+    private Principal principal;
 
 
     private MessageApiDelegate messageApiDelegate;
@@ -48,13 +50,15 @@ class MessageApiDelegateImplTest {
     @Test
     void processMessages() {
         when(message.getGame()).thenReturn(GAME_UUID);
+        when(exchange.getPrincipal()).thenReturn(Mono.just(principal));
+//        when(principal.getName()).thenReturn(USER_NAME);
         when(commandFactory.create(any(), any(), any())).thenAnswer(
                 invocationOnMock -> {
                     invocationOnMock.getArgument(2, AnswerConsumer.class).accept(RESULT_STRING);
                     return command;
                 });
 
-        var result = messageApiDelegate.processMessages(Mono.just(message), exchange)
+        messageApiDelegate.processMessages(Mono.just(message), exchange)
                 .block();
 
         verify(commandConsumerStrategy, times(1)).accept(eq(GAME_UUID.toString()), eq(command));

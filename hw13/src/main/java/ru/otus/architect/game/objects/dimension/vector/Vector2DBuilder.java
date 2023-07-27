@@ -25,15 +25,15 @@ public class Vector2DBuilder {
     }
 
     public Vector build() {
-        double radial = Math.sqrt(x*x + y*y);
+        double radial = Math.sqrt(x * x + y * y);
         int corner;
-        if(0 == x) {
-            if(0 == y) {
+        if (0 == x) {
+            if (0 == y) {
                 return new VectorImpl(x, y);
             }
-            corner = (y > 0)? DISCRETE_ANGLE_COUNT/2: 3*DISCRETE_ANGLE_COUNT/2;
+            corner = (y > 0) ? DISCRETE_ANGLE_COUNT / 2 : 3 * DISCRETE_ANGLE_COUNT / 2;
         } else {
-            corner = (int) Math.round(DISCRETE_ANGLE_COUNT*Math.atan(1.0 *y/x)/Math.PI);
+            corner = (int) Math.round(DISCRETE_ANGLE_COUNT * Math.atan(1.0 * y / x) / Math.PI);
             if (x < 0) {
                 corner += DISCRETE_ANGLE_COUNT;
             }

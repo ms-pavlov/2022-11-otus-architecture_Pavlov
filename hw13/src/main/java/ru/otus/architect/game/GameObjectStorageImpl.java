@@ -63,10 +63,24 @@ public class GameObjectStorageImpl implements GameObjectStorage {
     }
 
     @Override
+    public Long putGameObject(GameObject gameObject) {
+        var id = getNextObjectId();
+        storage.put(getNextObjectId(), new GameObjectInfo(gameObject));
+        return id;
+    }
+
+    @Override
     public void addActionName(Long objectId, String actionName) {
         Optional.ofNullable(objectId)
                 .map(storage::get)
                 .ifPresent(item -> item.addActionNames(actionName));
+    }
+
+    private Long getNextObjectId() {
+        return storage.keySet().stream()
+                .max(Long::compareTo)
+                .map(id -> id + 1)
+                .orElse(1L);
     }
 
     static class GameObjectInfo {

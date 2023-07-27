@@ -9,7 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.architect.commands.Command;
 import ru.otus.architect.game.Game;
 import ru.otus.architect.game.GameObject;
-import ru.otus.architect.ioc.IoCContainer;
 import ru.otus.architect.ioc.methods.FactoryMethod;
 import ru.otus.openapi.model.Message;
 
@@ -18,8 +17,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -78,7 +76,7 @@ class GameRegistrationPluginTest {
         var result = storage.get("IoC.Game");
 
         assertEquals(game, result.create());
-   }
+    }
 
     @Test
     @DisplayName("Зависимость IoC.Game::addCommand должна добавлять команду в очередь")

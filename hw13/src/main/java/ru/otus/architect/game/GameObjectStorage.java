@@ -14,5 +14,7 @@ public interface GameObjectStorage {
 
     void putGameObject(Long objectId, GameObject gameObject);
 
+    Long putGameObject(GameObject gameObject);
+
     void addActionName(Long objectId, String actionName);
 }

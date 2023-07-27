@@ -46,7 +46,7 @@ class GameObjectImplTest {
     void setParameterExist() {
         obj.setParameter(TEST_PARAMETER_NAME, TEST_SET_PARAMETER_VALUE);
 
-        assertEquals(TEST_SET_PARAMETER_VALUE,  obj.getParameter(TEST_PARAMETER_NAME));
+        assertEquals(TEST_SET_PARAMETER_VALUE, obj.getParameter(TEST_PARAMETER_NAME));
     }
 
     @Test
@@ -55,6 +55,6 @@ class GameObjectImplTest {
 
         obj.setParameter(TEST_SET_PARAMETER_NAME, TEST_SET_PARAMETER_VALUE);
 
-        assertEquals(TEST_SET_PARAMETER_VALUE,  obj.getParameter(TEST_SET_PARAMETER_NAME));
+        assertEquals(TEST_SET_PARAMETER_VALUE, obj.getParameter(TEST_SET_PARAMETER_NAME));
     }
 }

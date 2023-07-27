@@ -2,23 +2,38 @@ package ru.otus.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.otus.architect.adapter.AdapterFactory;
+import ru.otus.architect.adapter.plugins.AdapterPlugin;
 import ru.otus.architect.commands.Command;
+import ru.otus.architect.commands.CommandFactory;
 import ru.otus.architect.exceptions.strategy.ExceptionHandlingStrategyRepository;
 import ru.otus.architect.game.Game;
+import ru.otus.architect.game.GameObjectStorage;
+import ru.otus.architect.game.GameObjectStorageImpl;
 import ru.otus.architect.ioc.IoCContainer;
+import ru.otus.architect.ioc.methods.FactoryMethod;
+import ru.otus.architect.ioc.plugins.CommandsPlugin;
+import ru.otus.architect.ioc.plugins.GameRegistrationPlugin;
+import ru.otus.architect.ioc.plugins.IoCPlugin;
+import ru.otus.architect.ioc.plugins.SecurityPlugin;
+import ru.otus.architect.ioc.plugins.gen.GameObjectMovableAdapterPlugin;
 import ru.otus.architect.loops.QueueLoopThreadImpl;
 import ru.otus.architect.processor.DependencyNameGeneratorFactory;
 import ru.otus.architect.processor.DependencyNameGeneratorImpl;
+import ru.otus.architect.securities.KeyService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Configuration
 public class ApplicationConfig {
@@ -72,5 +87,26 @@ public class ApplicationConfig {
                         ),
                         Command::execute,
                         () -> true));
+    }
+
+    @Bean(name = "gameObjectStorageInitStrategy")
+    public Supplier<GameObjectStorage> gameObjectStorageInitStrategy() {
+        return GameObjectStorageImpl::new;
+    }
+
+    @Bean(name = "defaultGamePlugins")
+    public List<Function<Game, IoCPlugin>> defaultGamePlugins(
+            @Qualifier("registerIoCStrategy") BiConsumer<String, FactoryMethod> registerIoCStrategy,
+            @Qualifier("scopeIoCStrategy") Consumer<String> scopeIoCStrategy,
+            AdapterFactory adapterFactory,
+            CommandFactory commandFactory,
+            KeyService keyService) {
+        return List.of(
+                value -> new GameObjectMovableAdapterPlugin(registerIoCStrategy, scopeIoCStrategy, value),
+                value -> new AdapterPlugin(registerIoCStrategy, scopeIoCStrategy, adapterFactory, value),
+                value -> new GameRegistrationPlugin(registerIoCStrategy, scopeIoCStrategy, value),
+                value -> new SecurityPlugin(registerIoCStrategy, scopeIoCStrategy, keyService, value),
+                value -> new CommandsPlugin(registerIoCStrategy, scopeIoCStrategy, commandFactory, value)
+        );
     }
 }

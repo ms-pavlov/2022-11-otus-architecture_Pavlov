@@ -9,8 +9,32 @@ servers:
   - url: http://localhost:8081/api/v1
 tags:
   - name: message
-    description: Endpoint для приема входящих сообщений
+    description: Прием входящих сообщений
+  - name: games
+    description: Создание новой игры
+  - name: key
+    description: Ключ для верификации JWT
 paths:
+  /key/:
+    get:
+      tags:
+        - key
+      summary: получение ключа
+      description: получение ключадля верификации JWT
+      operationId: getKey
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyResponse'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
   /message/:
     post:
       tags:
@@ -44,8 +68,87 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Errors'
+  /game/:
+    post:
+      tags:
+        - games
+      summary: Создание игры
+      description: Создание новой игры
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameRequest'
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameResponse'
+        '400':
+          description: ошибка запроса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Errors'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      security:
+        - bearerAuth: [ ]
+  /game/{uuid}/token:
+    get:
+      tags:
+        - games
+      summary: Токен для игры
+      description: Получить токен для игры
+      operationId: getToken
+      parameters:
+        - name: uuid
+          in: path
+          description: guid игры
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '400':
+          description: ошибка запроса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Errors'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      security:
+        - bearerAuth: [ ]
 components:
   schemas:
+    KeyResponse:
+      type: object
+      properties:
+        key:
+          title: Ключ для верификации JWT
+          type: string
     Errors:
       type: object
       properties:
@@ -54,6 +157,41 @@ components:
           additionalProperties:
             example: Описание ошибки
             type: string
+    GameRequest:
+      type: object
+      properties:
+        users:
+          type: array
+          title: Список пользователей
+          items:
+            type: string
+    GameResponse:
+      type: object
+      properties:
+        author:
+          type: string
+          title: Автор
+        users:
+          type: array
+          title: Список пользователей
+          items:
+            type: string
+        game:
+          title: guid игры
+          type: string
+          format: uuid
+          example: a8bc388b-905e-462b-bb6e-d6c2693fcf5f
+    TokenResponse:
+      type: object
+      properties:
+        game:
+          title: guid игры
+          type: string
+          format: uuid
+          example: a8bc388b-905e-462b-bb6e-d6c2693fcf5f
+        token:
+          title: токен
+          type: string
     MessageResponse:
       type: object
       properties:
@@ -78,6 +216,9 @@ components:
           type: string
           format: uuid
           example: a8bc388b-905e-462b-bb6e-d6c2693fcf5f
+        token:
+          title: токен
+          type: string
         gameObject:
           title: id объекта
           type: integer
@@ -91,3 +232,8 @@ components:
         args:
           additionalProperties:
             type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

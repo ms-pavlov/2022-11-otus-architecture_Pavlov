@@ -2,11 +2,11 @@ package ru.otus.architect.ioc.methods;
 
 import java.util.stream.Stream;
 
-public class IoCommandInterfacesListMethod implements FactoryMethod{
+public class IoCommandInterfacesListMethod implements FactoryMethod {
 
     @Override
     public Object create(Object... args) {
-        if(1 != args.length && !(args[0] instanceof String)) {
+        if (1 != args.length && !(args[0] instanceof String)) {
             throw new RuntimeException();
         }
         try {

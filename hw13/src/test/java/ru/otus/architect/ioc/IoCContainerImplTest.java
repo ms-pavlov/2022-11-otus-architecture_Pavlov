@@ -32,7 +32,6 @@ class IoCContainerImplTest {
     }
 
 
-
     @Test
     @DisplayName("Должен разрешать зависимость по имени")
     void resolve() {
