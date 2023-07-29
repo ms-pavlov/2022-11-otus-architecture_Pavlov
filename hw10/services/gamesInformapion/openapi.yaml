@@ -1,0 +1,316 @@
+openapi: 3.0.0
+info:
+  title: API для сервиса с информацией о играх
+  description: |-
+    API для сервиса который хранит информацию о текущих играх и регистрирует участников на новые игры
+  termsOfService: http://localhost/
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081/api/v1
+tags:
+  - name: games
+    description: Создание новой игры
+paths:
+  /game/:
+    get:
+      tags:
+        - games
+      summary: Список текущих игр
+      description: Возвращает список текущих игр
+      operationId: findAllGames
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/GameResponse'
+        '400':
+          description: ошибка запроса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Errors'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      security:
+        - bearerAuth: [ ]
+    post:
+      tags:
+        - games
+      summary: Создание игры
+      description: Создание новой игры
+      operationId: createGame
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameRequest'
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameResponse'
+        '400':
+          description: ошибка запроса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Errors'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      security:
+        - bearerAuth: [ ]
+  /game/lobby:
+    post:
+      tags:
+        - games
+      summary: Создание лобби
+      description: Создание лобби для игры или турнира
+      operationId: createLobby
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LobbyRequest'
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LobbyResponse'
+        '400':
+          description: ошибка запроса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Errors'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      security:
+        - bearerAuth: [ ]
+    get:
+      tags:
+        - games
+      summary: Список лобби
+      description: Список лобби для игры или турнира
+      operationId: findAllLobbies
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/LobbyResponse'
+        '400':
+          description: ошибка запроса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Errors'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      security:
+        - bearerAuth: [ ]
+  /game/lobby/{id}:
+    get:
+      tags:
+        - games
+      summary: лобби по id
+      description: лобби для игры или турнира по id
+      operationId: findLobby
+      parameters:
+        - name: id
+          in: path
+          description: id лобби
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LobbyResponse'
+        '400':
+          description: ошибка запроса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Errors'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      security:
+        - bearerAuth: [ ]
+    put:
+      tags:
+        - games
+      summary: Редакторование лобби
+      description: Редакторование лобби
+      operationId: updateLobby
+      parameters:
+        - name: id
+          in: path
+          description: id лобби
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LobbyRequest'
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LobbyResponse'
+        '400':
+          description: ошибка запроса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Errors'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      security:
+        - bearerAuth: [ ]
+components:
+  schemas:
+    Errors:
+      type: object
+      properties:
+        errors:
+          type: object
+          additionalProperties:
+            example: Описание ошибки
+            type: string
+    LobbyRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          title: Автор
+        users:
+          type: array
+          title: Список пользователей
+          items:
+            type: string
+        rules:
+          type: array
+          title: Список правил доступных в игре
+          items:
+            type: string
+    LobbyResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          title: id
+        author:
+          type: string
+          title: Автор
+        games:
+          type: array
+          title: Текущие игры
+          items:
+            $ref: '#/components/schemas/GameResponse'
+        status:
+          type: string
+          title: Автор
+        users:
+          type: array
+          title: Список пользователей
+          items:
+            type: string
+        rules:
+          type: array
+          title: Список правил доступных в игре
+          items:
+            type: string
+    GameRequest:
+      type: object
+      properties:
+        users:
+          type: array
+          title: Список пользователей
+          items:
+            type: string
+        rules:
+          type: array
+          title: Список правил доступных в игре
+          items:
+            type: string
+    GameResponse:
+      type: object
+      properties:
+        author:
+          type: string
+          title: Автор
+        users:
+          type: array
+          title: Список пользователей
+          items:
+            type: string
+        rules:
+          type: array
+          title: Список правил доступных в игре
+          items:
+            type: string
+        game:
+          title: guid игры
+          type: string
+          format: uuid
+          example: a8bc388b-905e-462b-bb6e-d6c2693fcf5f
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

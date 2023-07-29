@@ -1,0 +1,201 @@
+openapi: 3.0.0
+info:
+  title: Endpoints для сервиса авторизации
+  description: |-
+    API для сервиса авторизации
+  termsOfService: http://localhost/
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081/api/v1
+tags:
+  - name: auth
+    description: Авторизация
+  - name: tokens
+    description: Токеный для игр
+paths:
+  /key/:
+    get:
+      tags:
+        - auth
+      summary: получение ключа
+      description: получение ключадля верификации JWT
+      operationId: getKey
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyResponse'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+  /registration:
+    post:
+      tags:
+        - auth
+      summary: Регистрация нового пользователя
+      description: Регистрация нового пользователя
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '400':
+          description: ошибка запроса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Errors'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+  /login:
+    post:
+      tags:
+        - auth
+      summary: login
+      description: login
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '400':
+          description: ошибка запроса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Errors'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+  /token/{uuid}:
+    get:
+      tags:
+        - tokens
+      summary: Токен для игры
+      description: Получить токен для игры
+      operationId: getToken
+      parameters:
+        - name: uuid
+          in: path
+          description: guid игры
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '400':
+          description: ошибка запроса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Errors'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      security:
+        - bearerAuth: []
+components:
+  schemas:
+    Errors:
+      type: object
+      properties:
+        errors:
+          type: object
+          additionalProperties:
+            example: Описание ошибки
+            type: string
+    Response:
+      type: object
+      properties:
+        status:
+          title: Статус запроса
+          type: string
+    LoginRequest:
+      type: object
+      properties:
+        login:
+          title: Логин
+          type: string
+        password:
+          title: Пароль
+          type: string
+          format: password
+    UserRequest:
+      type: object
+      properties:
+        login:
+          title: Логин
+          type: string
+        password:
+          title: Пароль
+          type: string
+          format: password
+        passwordConfirmation:
+          title: Подтверждение пароля
+          type: string
+          format: password
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          title: токен
+          type: string
+    GameTokenResponse:
+      type: object
+      properties:
+        game:
+          title: guid игры
+          type: string
+          format: uuid
+          example: a8bc388b-905e-462b-bb6e-d6c2693fcf5f
+        token:
+          title: токен
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,104 @@
+openapi: 3.0.0
+info:
+  title: Endpoint для игрового сервера
+  description: |-
+    Сервер где непосредственно происходит обработка команд игры
+  termsOfService: http://localhost/
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081/api/v1
+tags:
+  - name: message
+    description: Прием входящих сообщений
+paths:
+  /message/:
+    post:
+      tags:
+        - message
+      summary: Обработак сообщений
+      description: Обработак сообщений
+      operationId: processMessages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        '200':
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          description: ошибка запроса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Errors'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      security:
+        - bearerAuth: [ ]
+components:
+  schemas:
+    Errors:
+      type: object
+      properties:
+        errors:
+          type: object
+          additionalProperties:
+            example: Описание ошибки
+            type: string
+    MessageResponse:
+      type: object
+      title: Результат обработки сообщения
+      properties:
+        status:
+          title: Статус
+          type: string
+          example: ACCEPTED
+        message:
+          type: object
+          additionalProperties:
+            type: string
+    Message:
+      type: object
+      title: Сообщение
+      properties:
+        guid:
+          title: guid сообщения
+          type: string
+          format: uuid
+        game:
+          title: guid игры
+          type: string
+          format: uuid
+          example: a8bc388b-905e-462b-bb6e-d6c2693fcf5f
+        token:
+          title: токен
+          type: string
+        gameObject:
+          title: id объекта
+          type: integer
+          format: int64
+          example: 1
+        action:
+          title: id команды
+          type: integer
+          format: int64
+          example: 0
+        args:
+          additionalProperties:
+            type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
